@@ -1,0 +1,36 @@
+{
+  "name": "minio-documentation",
+  "version": "1.0.0",
+  "description": "Official MinIO documentation",
+  "main": "index.rst",
+  "scripts": {
+    "watch": "gulp watch",
+    "build": "gulp",
+    "gulp": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minio/docs.git"
+  },
+  "author": "MinIO Documentation Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/minio/docs/issues"
+  },
+  "homepage": "https://github.com/minio/docs#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-connect": "^5.7.0",
+    "gulp-load-plugins": "^2.0.7",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-terser": "^2.1.0",
+    "sass": "^1.49.0"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ]
+}

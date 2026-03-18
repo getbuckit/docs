@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -ex
+
+branch=$(git branch --show-current)
+export NVM_DIR="${HOME}/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+nvm use stable
+
+export PATH=${PATH}:${HOME}/.local/bin
+
+pip install -r requirements.txt
+
+make clean
+make SYNC_SDK=TRUE linux
+make windows macos container k8s openshift eks aks gke
+
+sudo rm -rf /var/www/docs/minio/kubernetes/upstream
+sudo mkdir -p /var/www/docs/minio/kubernetes/upstream
+sudo cp -vr build/${branch}/k8s/html/* /var/www/docs/minio/kubernetes/upstream/
+
+sudo rm -rf /var/www/docs/minio/kubernetes/eks
+sudo mkdir -p /var/www/docs/minio/kubernetes/eks
+sudo cp -vr build/${branch}/eks/html/* /var/www/docs/minio/kubernetes/eks/
+
+sudo rm -rf /var/www/docs/minio/kubernetes/gke
+sudo mkdir -p /var/www/docs/minio/kubernetes/gke
+sudo cp -vr build/${branch}/gke/html/* /var/www/docs/minio/kubernetes/gke/
+
+sudo rm -rf /var/www/docs/minio/kubernetes/aks
+sudo mkdir -p /var/www/docs/minio/kubernetes/aks
+sudo cp -vr build/${branch}/aks/html/* /var/www/docs/minio/kubernetes/aks/
+
+sudo rm -rf /var/www/docs/minio/kubernetes/openshift
+sudo mkdir -p /var/www/docs/minio/kubernetes/openshift
+sudo cp -vr build/${branch}/openshift/html/* /var/www/docs/minio/kubernetes/openshift/
+
+sudo rm -rf /var/ww/docs/minio/container
+sudo mkdir -p /var/www/docs/minio/container
+sudo cp -vr build/${branch}/container/html/* /var/www/docs/minio/container/
+
+sudo rm -rf /var/www/docs/minio/linux
+sudo mkdir -p /var/www/docs/minio/linux
+sudo cp -vr build/${branch}/linux/html/* /var/www/docs/minio/linux/
+
+sudo rm -rf /var/www/docs/minio/macos
+sudo mkdir -p /var/www/docs/minio/macos
+sudo cp -vr build/${branch}/macos/html/* /var/www/docs/minio/macos/
+
+sudo rm -rf /var/www/docs/minio/windows
+sudo mkdir -p /var/www/docs/minio/windows
+sudo cp -vr build/${branch}/windows/html/* /var/www/docs/minio/windows/

@@ -1,0 +1,101 @@
+{# Import the theme's layout. #}
+{% extends "!layout.html" %}
+
+{# Custom CSS overrides #}
+
+{% block extrahead %}
+   {%- include "head.html" %}
+   {{ super() }}
+{% endblock %}
+
+{# Override content block #}
+
+{%- macro miniosidebar() %}
+   {%- if render_sidebar %}
+      <nav
+         class="docs"
+         role="navigation"
+      >
+         {%- block sidebarlogo %}
+            {%- if logo %}
+               <p class="logo">
+                  <a href="{{ pathto(master_doc)|e }}">
+                     <img
+                        class="logo"
+                        src="{{ pathto('_static/' + logo, 1)|e }}"
+                        alt="Logo"
+                     />
+                  </a>
+               </p>
+            {%- endif %}
+         {%- endblock %}
+
+         {%- if sidebars != None %}
+            {#- new style sidebar: explicitly include/exclude templates #}
+            {%- for sidebartemplate in sidebars %}
+               {%- include sidebartemplate %}
+            {%- endfor %}
+         {%- else %}
+            {#- old style sidebars: using blocks -- should be deprecated #}
+
+            {%- block sidebarrel %}
+               {%- include "relations.html" %}
+            {%- endblock %}
+
+            {%- block sidebarsourcelink %}
+               {%- include "sourcelink.html" %}
+            {%- endblock %}
+
+            {%- if customsidebar %}
+               {%- include customsidebar %}
+            {%- endif %}
+
+            {%- block sidebarsearch %}
+               {%- include "searchbox.html" %}
+            {%- endblock %}
+         {%- endif %}
+      </nav>
+   {%- endif %}
+{%- endmacro %}
+
+{%- block header %}
+   {%- include "gtm-noscript.html" %}
+
+   {%- include "header.html" %}
+{%- endblock %}
+
+{%- block content %}
+   <section class="content">
+      <div class="container">
+         <div class="sidebar inactive scrollbar">
+            <div class="hide-aside visible-rm">
+               <button type="button" class="icon">
+                     {%- include "icons/close.html" %}
+                     Close Doc Navigation
+               </button>
+            </div>
+
+            <a class="sidebar__title" href="{{ pathto('index') }}">{{ shorttitle}}</a>
+            
+            {{ miniosidebar() }}
+         </div>
+
+         {%- include "toc.html" %}
+
+         <div class="content__main">
+            <div class="content__body">
+               {% block body %} {% endblock %}
+            </div>
+
+            {%- if pagename != "search-results" %}
+               {%- include "footer.html" %}
+            {%- endif %}
+         </div>
+      </div>
+   </section>
+{%- endblock %}
+
+{%- block footer %}
+   {%- include "cookie.html" %}
+   {%- include "custom-scripts.html" %}
+{%- endblock %}

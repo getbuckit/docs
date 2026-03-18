@@ -1,0 +1,75 @@
+{# Import the theme's layout. #}
+{% extends "!layout.html" %}
+
+{# Custom CSS overrides #}
+
+{% block extrahead %}
+   {%- include "head.html" %}
+   {{ super() }}
+{% endblock %}
+
+{# Override content block #}
+
+{%- macro miniosidebar() %}
+   {%- if render_sidebar %}
+      <nav
+         class="docs"
+         role="navigation"
+      >
+         {%- if sidebars != None %}
+            {#- new style sidebar: explicitly include/exclude templates #}
+            {%- for sidebartemplate in sidebars %}
+               {%- include sidebartemplate %}
+            {%- endfor %}
+         {%- endif %}
+      </nav>
+   {%- endif %}
+{%- endmacro %}
+
+{%- block header %}
+   {%- include "header.html" %}
+{%- endblock %}
+
+{%- block content %}
+   <section class="content">
+      <div class="container">
+         <div class="sidebar inactive scrollbar">
+            <div class="hide-aside visible-rm">
+               <button type="button" class="icon">
+                     {%- include "icons/close.html" %}
+                     Close Doc Navigation
+               </button>
+            </div>
+
+            <a class="sidebar__title" href="{{ pathto('index') }}">{{ shorttitle}}</a>
+            
+            {{ miniosidebar() }}
+         </div>
+
+         {%- include "toc.html" %}
+
+         <div class="content__main" id="search-documentation">
+            {% block body %}
+               <h1>Search</h1>
+
+               <div id="search">
+                  <div class="search__inner">
+                     <div id="search-box"></div>
+                     
+                     <div class="search__dropdown">
+                        <div id="search-filters"></div>
+                        <div id="search-clear"></div>
+                        <div id="search-results"></div>
+                        <div id="search-powered-by"></div>
+                     </div>
+                  </div>
+            </div>
+           {% endblock %}
+         </div>
+      </div>
+   </section>
+{%- endblock %}
+
+{%- block footer %}
+   {%- include "cookie.html" %}
+{%- endblock %}
